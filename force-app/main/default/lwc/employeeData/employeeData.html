@@ -6,7 +6,12 @@
         <c-employee-search onsearch={handleSeachData}></c-employee-search>
     <template if:true={data}>
         <lightning-card title="Employee Table">
+            <lightning-button variant="brand" label="New" title="Looks like a link" onclick={openRecordForm} slot="actions"></lightning-button>
+            <template if:true={isRecordForm}>
+                <c-record-form record-id={recordId}></c-record-form>
+            </template>
             <lightning-button variant="brand" label="Refresh Data" title="Looks like a link" onclick={refreshData} slot="actions"></lightning-button>
+            <template if:false={isRecordForm}>
             <lightning-datatable
                     key-field="id"
                     data={data}
@@ -14,6 +19,7 @@
                     onrowaction={handleRowAction}
                     onrowselection={getSelectedRecords}>
             </lightning-datatable>
+        </template>
             <!-- <lightning-button label="Delete" variant="destructive" onclick={deleteRecords}></lightning-button> -->
             <lightning-button variant="destructive" icon-name="utility:delete" label="Delete" title="Looks like a link" onclick={deleteRecord} slot="actions" ></lightning-button>
         </lightning-card>

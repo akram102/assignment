@@ -1,4 +1,4 @@
-import { LightningElement, wire } from 'lwc';
+import { api, LightningElement, wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
 import { NavigationMixin } from 'lightning/navigation';
@@ -38,6 +38,10 @@ export default class EmployeeData extends NavigationMixin(LightningElement) {
     data;
     error;
     refreshTable;
+    isRecordForm = false;
+
+    @api
+    recordId;
 
     @wire(getEmployee)
     wiredResult(result){
@@ -64,13 +68,28 @@ export default class EmployeeData extends NavigationMixin(LightningElement) {
 
     handleSeachData(event){
         this.searchValue = event.detail;
-        searchResult({key : this.searchValue})
-        .then((result)=>{
-            this.data = result;
-        })
-        .catch((error)=>{
-            this.error = error;
-        })
+        if(this.searchValue.length >= 3){
+                searchResult({key : this.searchValue})
+            .then((result)=>{
+                this.data = result;
+            })
+            .catch((error)=>{
+                this.error = error;
+            })
+        }else{
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'error',
+                    message: 'Enter 3 or more char to see result',
+                    variant: 'error',
+                }),
+            );
+        }
+        
+    }
+
+    openRecordForm(event){
+        this.isRecordForm = true;
     }
 
     deleteRecord(){
@@ -116,14 +135,10 @@ export default class EmployeeData extends NavigationMixin(LightningElement) {
         
     }
     showEditRecord(recordId){
-        this[NavigationMixin.Navigate]({
-            type: 'standard__recordPage',
-            attributes: {
-                recordId: recordId,
-                objectApiName: 'Employee__c',
-                actionName: 'edit'
-            }
-        })
+        console.log('recoooo',recordId)
+        this.recordId = recordId;
+        console.log('reeee',this.recordId);
+        this.isRecordForm = true;
     }
     refresh(){
         return refreshApex(this.refreshTable);
