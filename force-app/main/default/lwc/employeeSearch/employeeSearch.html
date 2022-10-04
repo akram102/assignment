@@ -1,0 +1,16 @@
+<template>
+    <div class="slds-grid slds-gutters">
+        <div class="slds-col slds-size_2-of-3">
+        <lightning-input
+            name="enter-search"
+            placeholder="enter employee name"
+            onchange={handleSearchValue}
+            value={searchValue}
+            type="search"
+        ></lightning-input>
+        </div>
+    <div class="slds-col slds-size_1-of-3">
+    <lightning-button variant="brand" label="Search" title="Looks like a link" onclick={handleSearch} ></lightning-button>
+</div> 
+    </div>      
+</template>

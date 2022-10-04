@@ -1,0 +1,22 @@
+<template>
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+    <template if:false={isLoading}> 
+        <c-employee-search onsearch={handleSeachData}></c-employee-search>
+    <template if:true={data}>
+        <lightning-card title="Employee Table">
+            <lightning-button variant="brand" label="Refresh Data" title="Looks like a link" onclick={refreshData} slot="actions"></lightning-button>
+            <lightning-datatable
+                    key-field="id"
+                    data={data}
+                    columns={columns}
+                    onrowaction={handleRowAction}
+                    onrowselection={getSelectedRecords}>
+            </lightning-datatable>
+            <!-- <lightning-button label="Delete" variant="destructive" onclick={deleteRecords}></lightning-button> -->
+            <lightning-button variant="destructive" icon-name="utility:delete" label="Delete" title="Looks like a link" onclick={deleteRecord} slot="actions" ></lightning-button>
+        </lightning-card>
+    </template>
+    </template>
+</template>
