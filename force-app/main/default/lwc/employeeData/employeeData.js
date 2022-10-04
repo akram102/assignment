@@ -9,6 +9,7 @@ import searchResult from '@salesforce/apex/AssignmentApex.searchResult';
 
 const actions = [
     { label: 'Edit', name: 'edit' },
+    { label: 'Delete', name: 'delete' },
 ]
 
 const COLUMNS = [
@@ -32,7 +33,7 @@ export default class EmployeeData extends NavigationMixin(LightningElement) {
     columns = COLUMNS;
 
     searchValue
-    selctedRecord;
+    selctedRecord = new Array();
     isLoading = false;
     data;
     error;
@@ -55,9 +56,8 @@ export default class EmployeeData extends NavigationMixin(LightningElement) {
     getSelectedRecords(event){
         const selectedRows = event.detail.selectedRows;
         console.log('selected----> ',selectedRows);
-        this.selctedRecord = new Array();
         for(let i = 0; i < selectedRows.length; i++){
-            this.selctedRecord.push(selectedRows[i]);
+            this.selctedRecord.push(selectedRows[i].Id);
         }
         console.log('delete----> ',this.selctedRecord)
     }
@@ -101,10 +101,25 @@ export default class EmployeeData extends NavigationMixin(LightningElement) {
     }
     handleRowAction(event){
         const Id = event.detail.row.Id;
+        const row = event.detail.row;
+        const action = event.detail.action.name;
+        console.log('action  ',action);
+        if(action == 'edit'){
+            this.showEditRecord(Id);
+        }
+        else if(action == 'delete'){
+            console.log('delete records')
+            this.selctedRecord.push(row);
+            console.log('record--->',this.selctedRecord)
+            this.deleteRecord();
+        }
+        
+    }
+    showEditRecord(recordId){
         this[NavigationMixin.Navigate]({
             type: 'standard__recordPage',
             attributes: {
-                recordId: Id,
+                recordId: recordId,
                 objectApiName: 'Employee__c',
                 actionName: 'edit'
             }
