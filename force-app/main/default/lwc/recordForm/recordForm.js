@@ -14,7 +14,8 @@ export default class RecordForm extends LightningElement {
     fields = [NAME_FIELD,EMAIL_FIELD,CONTACT_FIELD];
     objectApiName = EMPLOYEE_OBJECT;
 
-    handleSubmit(){
-        console.log('record-id ',this.recordId)
+    handleEvent(){
+        const cusEve = new CustomEvent('showtable');
+        this.dispatchEvent(cusEve);
     }
 }

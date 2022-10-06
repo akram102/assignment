@@ -90,6 +90,10 @@ export default class EmployeeData extends NavigationMixin(LightningElement) {
 
     openRecordForm(event){
         this.isRecordForm = true;
+        this.recordId = null;
+    }
+    closeRecordForm(){
+        this.isRecordForm = false;
     }
 
     deleteRecord(){

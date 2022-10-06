@@ -8,7 +8,7 @@
         <lightning-card title="Employee Table">
             <lightning-button variant="brand" label="New" title="Looks like a link" onclick={openRecordForm} slot="actions"></lightning-button>
             <template if:true={isRecordForm}>
-                <c-record-form record-id={recordId}></c-record-form>
+                <c-record-form record-id={recordId} onshowtable={closeRecordForm}></c-record-form>
             </template>
             <lightning-button variant="brand" label="Refresh Data" title="Looks like a link" onclick={refreshData} slot="actions"></lightning-button>
             <template if:false={isRecordForm}>
